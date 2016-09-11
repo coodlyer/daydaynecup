@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="record">
+    <typeAlias alias="recordDO" type="com.entity.recordDO"/>
+    <resultMap id="recordResult" class="recordDO">
+        <result property="rid" column="rid"/>
+        <result property="device_tag" column="device_tag"/>
+        <result property="am_done" column="am_done"/>
+        <result property="pm_done" column="pm_done"/>
+        <result property="record_date" column="record_date"/>
+    </resultMap>
+    <sql id="allColumns">
+        rid,
+        device_tag,
+        am_done,
+        pm_done,
+        record_date
+    </sql>
+    <insert id="insertRecord" parameterClass="recordDO">
+        <selectKey resultClass="long" keyProperty="rid">
+            SELECT rid as rid
+        </selectKey>
+        insert into record(
+        <include refid="allColumns"/>
+        )VALUES (
+        #rid#,
+        #device_tag#,
+        #am_done#,
+        #pm_done#,
+        #record_date#
+        )
+    </insert>
+    <select id="selectRecord" resultMap="recordResult">
+        select * from record
+        where device_tag = #device_tag#
+    </select>
+    <update id="updateRecord" parameterClass="recordDO">
+        update record set
+        rid=#rid
+        <isNotEmpty prepend="," property="am_done">am_done=#am_done#</isNotEmpty>
+        <isNotEmpty prepend="," property="pm_done">pm_done=#pm_done#</isNotEmpty>
+        where rid=#rid#
+    </update>
+    <delete id="deleteRecord" parameterClass="Long">
+        delete from record where rid=#rid#
+    </delete>
+
+</sqlMap>

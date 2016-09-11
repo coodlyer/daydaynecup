@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="user">
+    <typeAlias alias="userDO" type="com.entity.UserDO" />
+    <typeAlias alias="userInfoDO" type="com.entity.userInfo"/>
+
+    <resultMap id="userResult" class="userDO">
+        <result property="nickName" column="nickName" />
+        <result property="password" column="password"/>
+        <result property="id" column="id" />
+        <result property="user_pic" column="user_pic"/>
+        <result property="rp_count" column="rp_count"/>
+        <result property="email" column="email"/>
+        <result property="birthday" column="birthday" />
+        <result property="sex" column="sex"/>
+        <result property="description" column="description"/>
+        <result property="gmtCreate" column="gmt_Create"/>
+        <result property="gmtModify" column="gmt_Modify"/>
+
+    </resultMap>
+    <resultMap id="userInfoResult" class="userInfoDO">
+        <result property="id" column="id"/>
+        <result property="nickName" column="nickName"/>
+        <result property="user_pic" column="user_pic"/>
+        <result property="rp_count" column="rp_count"/>
+    </resultMap>
+    <sql id="allColumns">
+        nickName,
+        password,
+        id,
+        user_pic,
+        rp_count,
+        email,
+        birthday,
+        sex,
+        description,
+        gmt_Create,
+        gmt_Modify
+    </sql>
+    <insert id="regist" parameterClass="userDO">
+        insert into
+        tm_user
+        (
+        <include refid="allColumns"/>
+        ) values (
+        #nickName#,
+        #password#,
+        #id#,
+        #user_pic#,
+        #rp_count#,
+        #email#,
+        #birthday#,
+        #sex#,
+        #description#,
+        now(),
+        now()
+        )
+
+    </insert>
+    <select id = "selectUserBynickName"  resultMap="userResult">
+        select *
+        from tm_user
+        where nickName = #nickName#
+    </select>
+    <update id="UpdateUser" parameterClass="userDO">
+        update tm_user SET
+        id=#id#,
+        email=#email#,
+        user_pic=#user_pic#,
+        birthday=#birthday#,
+        sex=#sex#,
+        description=#description#
+        where id=#id#;
+
+    </update>
+    <update id="UpdateUserRP" parameterClass="userDO">
+        update tm_user SET
+        id=#id#,
+        rp_count=#rp_count#
+        where id=#id#;
+    </update>
+    <select id="userInfo" resultMap="userInfoResult">
+        select * from tm_user where id=#id#;
+    </select>
+
+
+
+</sqlMap>

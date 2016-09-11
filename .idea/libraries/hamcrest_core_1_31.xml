@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="hamcrest-core-1.31">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/Junit/hamcrest-core-1.3.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Junit/junit-4.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

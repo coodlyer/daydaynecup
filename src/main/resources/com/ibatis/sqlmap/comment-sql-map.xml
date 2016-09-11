@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="comment">
+    <typeAlias alias="commentDO" type="com.entity.commentDO"/>
+    <resultMap id="commentResult" class="commentDO">
+        <result property="comment_id" column="comment_id"/>
+        <result property="device_tag" column="device_tag"/>
+        <result property="content" column="content"/>
+        <result property="vote_num" column="vote_num"/>
+        <result property="gmt_create" column="gmt_create"/>
+    </resultMap>
+    <sql id="allColumns">
+        comment_id,
+        device_tag,
+        content,
+        vote_num,
+        gmt_create
+    </sql>
+    <insert id="insertComment" parameterClass="commentDO">
+        INSERT into
+        comment (
+        <include refid="allColumns"/>
+        )VALUES(
+         #comment_id#,
+         #device_tag#,
+         #content#,
+         #vote_num#,
+          now()
+        )
+    </insert>
+
+    <select id="selecCommentDO" resultMap="commentResult">
+        select * from comment where comment_id = #comment_id# ;
+    </select>
+
+    <select id="selectAllComment" resultMap="commentResult">
+        select * from comment  where <![CDATA[ vote_num>5 ]]>
+        order by vote_num desc;
+    </select>
+    <select id="selectAllCommentByTime" resultMap="commentResult">
+        select * from comment where <![CDATA[ vote_num<=5 ]]>
+        order by gmt_create desc;
+    </select>
+
+    <update id="voteComment" parameterClass="commentDO">
+        update comment SET
+        vote_num=#vote_num#
+        where comment_id=#comment_id#;
+
+    </update>
+    <delete id="deleteComment"  parameterClass="Long">
+        delete from comment
+        where comment_id=#comment_id#;
+    </delete>
+    
+</sqlMap>
